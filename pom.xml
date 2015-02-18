@@ -12,7 +12,7 @@
 	<version>1.7</version>
 	<name>ChEA</name>
     <scm>
-        <developerConnection>scm:git:git://</developerConnection>
+        <developerConnection>scm:git:git@146.203.54.94:maayanlab/chea.git</developerConnection>
     </scm>
 	<dependencies>
 		<!-- JUNIT DEPENDENCY FOR TESTING -->
