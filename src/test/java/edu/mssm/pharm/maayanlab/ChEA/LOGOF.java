@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import edu.mssm.pharm.maayanlab.FileUtils;
+import edu.mssm.pharm.maayanlab.common.core.FileUtils;
 
 public class LOGOF {
 	

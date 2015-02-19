@@ -11,12 +11,13 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Set;
 
 import pal.statistics.FisherExact;
-import edu.mssm.pharm.maayanlab.FileUtils;
-import edu.mssm.pharm.maayanlab.SetOps;
-import edu.mssm.pharm.maayanlab.Settings;
-import edu.mssm.pharm.maayanlab.SettingsChanger;
+import edu.mssm.pharm.maayanlab.common.core.FileUtils;
+import edu.mssm.pharm.maayanlab.common.core.Settings;
+import edu.mssm.pharm.maayanlab.common.core.SettingsChanger;
+import edu.mssm.pharm.maayanlab.common.math.SetOps;
 
 public class ChEA implements SettingsChanger {
 
@@ -240,9 +241,9 @@ public class ChEA implements SettingsChanger {
 		while (tfIterator.hasNext()) {
 			TranscriptionFactor currentFactor = tfIterator.next();
 			
-			HashSet<String> targetBgGenes = currentFactor.getTargets();
+			Set<String> targetBgGenes = currentFactor.getTargets();
 			// Target input genes is the intersection of target background genes and input genes
-			HashSet<String> targetInputGenes = SetOps.intersection(targetBgGenes, geneInputSet);
+			Set<String> targetInputGenes = SetOps.intersection(targetBgGenes, geneInputSet);
 					
 			double numOfTargetBgGenes = targetBgGenes.size();
 			double totalBgGenes = geneBgSet.size();

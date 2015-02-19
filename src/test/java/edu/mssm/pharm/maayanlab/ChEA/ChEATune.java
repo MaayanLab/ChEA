@@ -5,8 +5,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 
-import edu.mssm.pharm.maayanlab.FileUtils;
+import edu.mssm.pharm.maayanlab.common.core.FileUtils;
 
 public class ChEATune {
 
@@ -32,7 +33,7 @@ public class ChEATune {
 		}
 	}
 	
-	private static HashSet<String> pickSample(HashSet<String> population, int samplesNeeded) {
+	private static Set<String> pickSample(Set<String> population, int samplesNeeded) {
 		HashSet<String> sampledPopulation = new HashSet<String>();
 		Random r = new Random();
 		

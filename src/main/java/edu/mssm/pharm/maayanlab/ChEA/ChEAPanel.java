@@ -28,10 +28,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import edu.mssm.pharm.maayanlab.FileDrop;
-import edu.mssm.pharm.maayanlab.FileUtils;
-import edu.mssm.pharm.maayanlab.SettingsChanger;
-import edu.mssm.pharm.maayanlab.UIUtils;
+import edu.mssm.pharm.maayanlab.common.core.FileUtils;
+import edu.mssm.pharm.maayanlab.common.core.SettingsChanger;
+import edu.mssm.pharm.maayanlab.common.swing.FileDrop;
+import edu.mssm.pharm.maayanlab.common.swing.UIUtils;
 
 public class ChEAPanel extends JPanel {
 
