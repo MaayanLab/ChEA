@@ -9,7 +9,7 @@
 	<groupId>edu.mssm.pharm.maayanlab.ChEA</groupId>
 	<artifactId>ChEA</artifactId>
 	<packaging>jar</packaging>
-	<version>1.8-SNAPSHOT</version>
+	<version>1.8</version>
 	<name>ChEA</name>
 	<scm>
 		<developerConnection>scm:git:git@146.203.54.94:maayanlab/chea.git</developerConnection>
