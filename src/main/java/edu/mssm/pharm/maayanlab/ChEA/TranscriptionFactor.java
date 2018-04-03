@@ -1,18 +1,13 @@
 package edu.mssm.pharm.maayanlab.ChEA;
 
 import java.util.HashSet;
-import java.util.Set;
-
-import com.google.gson.annotations.Expose;
 
 public class TranscriptionFactor implements Comparable<Object> {
 
-	@Expose
 	private String name;	// TF-ID
-	@Expose
 	private String simpleName;	// TF
 	private int species;	// Species that transcription factor occurs in
-	private Set<String> targets = new HashSet<String>();
+	private HashSet<String> targets = new HashSet<String>();
 	
 	public final static int MOUSE = 1;
 	public final static int HUMAN = 2;
@@ -23,14 +18,11 @@ public class TranscriptionFactor implements Comparable<Object> {
 	
 	private double fractionOfTargetsInInput;
 	private double fractionOfTargetsInBackground;
-	@Expose
 	private double pvalue;
-	@Expose
 	private double zscore;
-	@Expose
 	private double combinedScore;
-	@Expose
-	private Set<String> enrichedTargets;
+	
+	private HashSet<String> enrichedTargets;
 	
 	public TranscriptionFactor(
 			String name,
@@ -66,11 +58,11 @@ public class TranscriptionFactor implements Comparable<Object> {
 		targets.add(target);
 	}
 	
-	public Set<String> getTargets() {
+	public HashSet<String> getTargets() {
 		return targets;
 	}
 	
-	protected void setTargets(Set<String> targets) {
+	protected void setTargets(HashSet<String> targets) {
 		this.targets = targets;
 	}
 	
@@ -79,11 +71,7 @@ public class TranscriptionFactor implements Comparable<Object> {
 		this.standardDeviation = standardDeviation;
 	}
 	
-	public Set<String> getEnrichedTargets() {
-		return enrichedTargets;
-	}
-
-	public void setEnrichedTargets(Set<String> enrichedTargets) {
+	public void setEnrichedTargets(HashSet<String> enrichedTargets) {
 		this.enrichedTargets = enrichedTargets;
 	}
 	
@@ -147,7 +135,6 @@ public class TranscriptionFactor implements Comparable<Object> {
 		return outputString.toString();
 	}
 
-	@Override
 	public int compareTo(Object o) {
 		if (this.pvalue > ((TranscriptionFactor) o).pvalue)
 			return 1;

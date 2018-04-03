@@ -28,10 +28,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import edu.mssm.pharm.maayanlab.common.core.FileUtils;
-import edu.mssm.pharm.maayanlab.common.core.SettingsChanger;
-import edu.mssm.pharm.maayanlab.common.swing.FileDrop;
-import edu.mssm.pharm.maayanlab.common.swing.UIUtils;
+import edu.mssm.pharm.maayanlab.FileDrop;
+import edu.mssm.pharm.maayanlab.FileUtils;
+import edu.mssm.pharm.maayanlab.SettingsChanger;
+import edu.mssm.pharm.maayanlab.UIUtils;
 
 public class ChEAPanel extends JPanel {
 
@@ -58,15 +58,14 @@ public class ChEAPanel extends JPanel {
 		if (args.length == 0) {			
 			// Schedule a job for the EDT
 			SwingUtilities.invokeLater(new Runnable() {
-				@Override
 				public void run() {
 					createAndShowGUI();
 				}
 			});
 		}
-		else{
-			ChEA.main(args);
-		}
+//		else{
+//			ChEA.main(args);
+//		}
 	}
 	
 	private static void createAndShowGUI() {
@@ -103,7 +102,6 @@ public class ChEAPanel extends JPanel {
 		// File choosers
 		openChooser = new JFileChooser(System.getProperty("user.dir"));
 		openChooser.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				File file = openChooser.getSelectedFile();
 				if (file.canRead() && e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION))
@@ -112,7 +110,6 @@ public class ChEAPanel extends JPanel {
 		});
 		saveChooser = new JFileChooser(System.getProperty("user.dir"));
 		saveChooser.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				File file = saveChooser.getSelectedFile();
 				if (file != null && e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION)) {
@@ -130,7 +127,6 @@ public class ChEAPanel extends JPanel {
 		JButton openFileButton = new JButton("Input Genes");
 		openFileButton.setPreferredSize(new Dimension(300, 30));
 		openFileButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				openChooser.showOpenDialog(panel);
 			}
@@ -138,7 +134,6 @@ public class ChEAPanel extends JPanel {
 		JButton saveFileButton = new JButton("Output TFs");
 		saveFileButton.setPreferredSize(new Dimension(300, 30));
 		saveFileButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveChooser.showSaveDialog(panel);
 			}
@@ -150,7 +145,6 @@ public class ChEAPanel extends JPanel {
 		
 		// File Drop
 		new FileDrop(openPath, new FileDrop.Listener() {
-			@Override
 			public void filesDropped(File[] files) {
 				if (files[0].canRead()) {
 					setupIO(files[0]);
@@ -167,7 +161,6 @@ public class ChEAPanel extends JPanel {
 		
 		// File Drop
 		new FileDrop(inputTextArea, new FileDrop.Listener() {
-			@Override
 			public void filesDropped(File[] files) {
 				if (files[0].canRead()) {
 					setupIO(files[0]);
@@ -180,7 +173,6 @@ public class ChEAPanel extends JPanel {
 		openButton = new JButton("View Results");
 		openButton.setEnabled(false);
 		openButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Desktop.getDesktop().open(new File(output));
@@ -193,7 +185,6 @@ public class ChEAPanel extends JPanel {
 		// Start button
 		JButton runButton = new JButton("Find TFs");
 		runButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				output = savePath.getText();
 				ArrayList<String> inputList = UIUtils.getTextAreaText(inputTextArea); 
@@ -227,7 +218,6 @@ public class ChEAPanel extends JPanel {
 		dbCombo = new JComboBox(databases);
 		dbCombo.setSelectedIndex(0);
 		dbCombo.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (dbCombo.getSelectedIndex() == 2) {
 					bgCombo.setSelectedIndex(2);

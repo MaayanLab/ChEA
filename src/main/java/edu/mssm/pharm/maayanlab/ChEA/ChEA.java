@@ -11,40 +11,68 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Set;
 
 import pal.statistics.FisherExact;
-import edu.mssm.pharm.maayanlab.common.core.FileUtils;
-import edu.mssm.pharm.maayanlab.common.core.Settings;
-import edu.mssm.pharm.maayanlab.common.core.SettingsChanger;
-import edu.mssm.pharm.maayanlab.common.math.SetOps;
+import edu.mssm.pharm.maayanlab.FileUtils;
+import edu.mssm.pharm.maayanlab.SetOps;
+import edu.mssm.pharm.maayanlab.Settings;
+import edu.mssm.pharm.maayanlab.SettingsChanger;
 
 public class ChEA implements SettingsChanger {
 
 	private LinkedList<TranscriptionFactor> transcriptionFactors;
 	
-	protected final static String CHEA_BACKGROUND = "res/chea_background.csv";
-	protected final static String TRANSFAC_BACKGROUND = "res/transfac_background.csv";
-	protected final static String PWM_GB_BACKGROUND = "res/PWM-GB.csv";
+	protected static final String CHEA_BACKGROUND = "res/chea_background.csv";
+	protected static final String TRANSFAC_BACKGROUND = "res/transfac_background.csv";
+	protected static final String PWM_GB_BACKGROUND = "res/PWM-GB.csv";
 
 	// Paths to the background rank files
 	private final String MOUSE_CHEA_RANKS = "res/mouse_ChEA_ranks.txt";
-	private final String HUMAN_CHEA_RANKS = "res/human_ChEA_ranks.txt";
+	private final String HUMAN_CHEA_RANKS = "res/human_ChEA_ranks.txt";	
 	private final String COMBINED_CHEA_RANKS = "res/combined_ChEA_ranks.txt";
 	private final String MOUSE_TRANSFAC_RANKS = "res/mouse_TRANSFAC_ranks.txt";
 	private final String HUMAN_TRANSFAC_RANKS = "res/human_TRANSFAC_ranks.txt";
 	private final String COMBINED_TRANSFAC_RANKS = "res/combined_TRANSFAC_ranks.txt";
 	private final String PWM_GB_RANKS = "res/PWM-GB_ranks.txt";
-			
+
+	// New
+	protected static final String CHEA_2015_BACKGROUND = "res/ChEA_2015_background.txt";
+	private final String MOUSE_CHEA_2015_RANKS = "res/ChEA_ranks_mouse.tsv";
+	private final String HUMAN_CHEA_2015_RANKS = "res/ChEA_ranks_human.tsv";
+	private final String COMBINED_CHEA_2015_RANKS = "res/ChEA_ranks.tsv";
+
+
+	protected static final String TRANS_JASP_BACKGROUND = "res/TRANSFAC_and_JASPAR_PWMs_background.txt";
+	private final String MOUSE_TRANS_JASP_RANKS = "res/Transfac_and_Jaspar_PWMs_ranks_mouse.tsv";
+	private final String HUMAN_TRANS_JASP_RANKS = "res/Transfac_and_Jaspar_PWMs_ranks_human.tsv";
+	private final String COMBINED_TRANS_JASP_RANKS = "res/Transfac_and_Jaspar_PWMs_ranks.tsv";
+
+	protected static final String CONSENSUS_BACKGROUND = "res/ENCODE_and_ChEA_Consensus_TFs_from_ChIP-X_background.txt";
+	private final String CONSENSUS_RANKS = "res/ENCODE_and_ChEA_Consensus_ranks.tsv";
+
+	protected static final String ENCODE_2015_BACKGROUND = "res/ENCODE_TF_ChIP-seq_2015_background.txt";
+	private final String MOUSE_ENCODE_2015_RANKS = "res/ENCODE_TF_ChIP-seq_2015_ranks_mouse.tsv";
+	private final String HUMAN_ENCODE_2015_RANKS = "res/ENCODE_TF_ChIP-seq_2015_ranks_human.tsv";
+	private final String COMBINED_ENCODE_2015_RANKS = "res/ENCODE_TF_ChIP-seq_2015_ranks.tsv";
+
+
+	protected final static String ARCHS4_BACKGROUND = "res/ARCHS4_TFs_Coexp.csv";
+	private final String HUMAN_ARCHS4_RANKS = "res/ARCHS4_TFs_Coexp_ranks.txt";
+
+	protected final static String ENRICHR_BACKGROUND = "res/Enrichr_Submissions_TF-Gene_Coocurrence.csv";
+	private final String COMBINED_ENRICHR_RANKS = "res/Enrichr_Submissions_TF-Gene_Coocurrence_ranks.txt";
+
+	
+	
 	// Output header
 	protected final String HEADER = "TF,Target/Input,Targets/Database,Fraction/Input,Fraction/Database,Difference,P-value,Z-score,Combined Score,Genes";
 	
 	// Default settings
 	private final Settings settings = new Settings() {
 		{
-			// String: rank the TFs by the Fisher Exact test's p-value, rank against the background of random genes, or combined score of the two. [combined score/p-value/rank]
+			// String: rank the TFs by the Fisher Exact test's p-value, rank against the background of random genes, or combined score of the two. [combined_score/pvalue/rank]
 			set(ChEA.SORT_BY, ChEA.COMBINED_SCORE);
-			// String: the organisms included in the transcription factor background database for enrichment analysis. [mouse/human/both]
+			// String: the organisms included in the transcription factor background database for enrichment analysis. [mouse_only/human_only/both]
 			set(ChEA.INCLUDED_ORGANISMS, ChEA.BOTH);
 			// String: the source of the transcription factor background database used for enrichment analysis. [ChIP-X/PWM-JT/PWM-GB]
 			set(ChEA.BACKGROUND_DATABASE, ChEA.CHIPX);
@@ -52,20 +80,28 @@ public class ChEA implements SettingsChanger {
 	};
 	
 	// Settings variables
-	public final static String SORT_BY = "sort transcription factors by";
-	public final static String COMBINED_SCORE = "combined score";
-	public final static String PVALUE = "p-value";
+	public final static String SORT_BY = "sort_TFs_by";
+	public final static String COMBINED_SCORE = "combined_score";
+	public final static String PVALUE = "pvalue";
 	public final static String RANK = "rank";
 	
-	public final static String INCLUDED_ORGANISMS = "included organisms in the background database";
-	public final static String MOUSE_ONLY = "mouse";
-	public final static String HUMAN_ONLY = "human";
+	public final static String INCLUDED_ORGANISMS = "included_organisms";
+	public final static String MOUSE_ONLY = "mouse_only";
+	public final static String HUMAN_ONLY = "human_only";
 	public final static String BOTH = "both";
 	
-	public final static String BACKGROUND_DATABASE = "TF-target gene background database used for enrichment";
+	public final static String BACKGROUND_DATABASE = "background_database";
 	public final static String CHIPX = "ChIP-X";
 	public final static String PWM = "PWM-JT";
 	public final static String PWM_GB = "PWM-GB";
+	public static final String CHEA_2015 = "ChEA 2015";
+	public static final String TRANS_JASP = "Transfac and Jaspar";
+	public static final String CONSENSUS = "ChEA & ENCODE Consensus";
+	public static final String ENCODE_2015 = "ENCODE 2015";
+
+	public static final String ARCHS4 = "ARCHS4 TFs Coexp";
+	public static final String ENRICHR = "Enrichr Submissions TF-Gene Coocurrence";
+	
 	
 	public static void main(String[] args) {
 		if (args.length == 2) {
@@ -92,7 +128,7 @@ public class ChEA implements SettingsChanger {
 		settings.loadSettings(externalSettings);
 	}
 	
-	@Override
+	
 	// Used for other methods to set settings
 	public void setSetting(String key, String value) {
 		settings.set(key, value);
@@ -128,6 +164,26 @@ public class ChEA implements SettingsChanger {
 			setSetting(INCLUDED_ORGANISMS, HUMAN_ONLY);
 			readBackground(FileUtils.readResource(PWM_GB_BACKGROUND));			
 		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(CHEA_2015)) {
+			readBackground(FileUtils.readResource(CHEA_2015_BACKGROUND));
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(TRANS_JASP)) {
+			readBackground(FileUtils.readResource(TRANS_JASP_BACKGROUND));
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(CONSENSUS)) {
+			readBackground(FileUtils.readResource(CONSENSUS_BACKGROUND));
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(ENCODE_2015)) {
+			readBackground(FileUtils.readResource(ENCODE_2015_BACKGROUND));
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(ARCHS4)) {
+			setSetting(INCLUDED_ORGANISMS, HUMAN_ONLY);
+			readBackground(FileUtils.readResource(ARCHS4_BACKGROUND));
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(ENRICHR)) {
+			setSetting(INCLUDED_ORGANISMS, BOTH);
+			readBackground(FileUtils.readResource(ENRICHR_BACKGROUND));
+		}		
 		else			
 			readBackground(FileUtils.readResource(CHEA_BACKGROUND));
 		computeEnrichment(genelist);
@@ -209,6 +265,39 @@ public class ChEA implements SettingsChanger {
 		else if (settings.get(BACKGROUND_DATABASE).equals(PWM_GB)) {
 			ranks = FileUtils.readResource(PWM_GB_RANKS);
 		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(CHEA_2015)) {
+			if (settings.get(INCLUDED_ORGANISMS).equals(MOUSE_ONLY))
+				ranks = FileUtils.readResource(MOUSE_CHEA_2015_RANKS);
+			else if (settings.get(INCLUDED_ORGANISMS).equals(HUMAN_ONLY))
+				ranks = FileUtils.readResource(HUMAN_CHEA_2015_RANKS);
+			else
+				ranks = FileUtils.readResource(COMBINED_CHEA_2015_RANKS);			
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(TRANS_JASP)) {
+			if (settings.get(INCLUDED_ORGANISMS).equals(MOUSE_ONLY))
+				ranks = FileUtils.readResource(MOUSE_TRANS_JASP_RANKS);
+			else if (settings.get(INCLUDED_ORGANISMS).equals(HUMAN_ONLY))
+				ranks = FileUtils.readResource(HUMAN_TRANS_JASP_RANKS);
+			else
+				ranks = FileUtils.readResource(COMBINED_TRANS_JASP_RANKS);			
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(CONSENSUS)) {
+			ranks = FileUtils.readResource(CONSENSUS_RANKS);			
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(ENCODE_2015)) {
+			if (settings.get(INCLUDED_ORGANISMS).equals(MOUSE_ONLY))
+				ranks = FileUtils.readResource(MOUSE_ENCODE_2015_RANKS);
+			else if (settings.get(INCLUDED_ORGANISMS).equals(HUMAN_ONLY))
+				ranks = FileUtils.readResource(HUMAN_ENCODE_2015_RANKS);
+			else
+				ranks = FileUtils.readResource(COMBINED_ENCODE_2015_RANKS);			
+		}		
+		else if (settings.get(BACKGROUND_DATABASE).equals(ARCHS4)) {
+			ranks = FileUtils.readResource(HUMAN_ARCHS4_RANKS);		
+		}	
+		else if (settings.get(BACKGROUND_DATABASE).equals(ENRICHR)) {
+			ranks = FileUtils.readResource(COMBINED_ENRICHR_RANKS);		
+		}		
 		else {
 			if (settings.get(INCLUDED_ORGANISMS).equals(MOUSE_ONLY))
 				ranks = FileUtils.readResource(MOUSE_CHEA_RANKS);
@@ -241,9 +330,9 @@ public class ChEA implements SettingsChanger {
 		while (tfIterator.hasNext()) {
 			TranscriptionFactor currentFactor = tfIterator.next();
 			
-			Set<String> targetBgGenes = currentFactor.getTargets();
+			HashSet<String> targetBgGenes = currentFactor.getTargets();
 			// Target input genes is the intersection of target background genes and input genes
-			Set<String> targetInputGenes = SetOps.intersection(targetBgGenes, geneInputSet);
+			HashSet<String> targetInputGenes = SetOps.intersection(targetBgGenes, geneInputSet);
 					
 			double numOfTargetBgGenes = targetBgGenes.size();
 			double totalBgGenes = geneBgSet.size();
@@ -284,7 +373,6 @@ public class ChEA implements SettingsChanger {
 		if (settings.get(SORT_BY).equals(COMBINED_SCORE)) {
 			// Sort by combined score
 			Collections.sort(transcriptionFactors, new Comparator<TranscriptionFactor>() {
-				@Override
 				public int compare(TranscriptionFactor o1, TranscriptionFactor o2) {
 					if (o1.getCombinedScore() < o2.getCombinedScore())				
 						return 1;
@@ -298,7 +386,6 @@ public class ChEA implements SettingsChanger {
 		else if (settings.get(SORT_BY).equals(RANK)) {
 			// Sort by z-score
 			Collections.sort(transcriptionFactors, new Comparator<TranscriptionFactor>() {
-				@Override
 				public int compare(TranscriptionFactor o1, TranscriptionFactor o2) {
 					if (o1.getZScore() > o2.getZScore())				
 						return 1;
