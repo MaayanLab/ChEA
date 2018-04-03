@@ -3,9 +3,11 @@ package edu.mssm.pharm.maayanlab.ChEA;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gson.annotations.Expose;
 public class TranscriptionFactor implements Comparable<Object> {
-
+	@Expose
 	private String name;	// TF-ID
+	@Expose
 	private String simpleName;	// TF
 	private int species;	// Species that transcription factor occurs in
 	private Set<String> targets = new HashSet<String>();
@@ -19,10 +21,13 @@ public class TranscriptionFactor implements Comparable<Object> {
 	
 	private double fractionOfTargetsInInput;
 	private double fractionOfTargetsInBackground;
+	@Expose
 	private double pvalue;
+	@Expose
 	private double zscore;
+	@Expose
 	private double combinedScore;
-
+	@Expose
 	private Set<String> enrichedTargets;
 	
 	public TranscriptionFactor(
@@ -140,6 +145,7 @@ public class TranscriptionFactor implements Comparable<Object> {
 		return outputString.toString();
 	}
 
+	@Override
 	public int compareTo(Object o) {
 		if (this.pvalue > ((TranscriptionFactor) o).pvalue)
 			return 1;
