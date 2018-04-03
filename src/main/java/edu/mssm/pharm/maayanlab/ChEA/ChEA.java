@@ -11,30 +11,31 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Set;
 
 import pal.statistics.FisherExact;
-import edu.mssm.pharm.maayanlab.FileUtils;
-import edu.mssm.pharm.maayanlab.SetOps;
-import edu.mssm.pharm.maayanlab.Settings;
-import edu.mssm.pharm.maayanlab.SettingsChanger;
+import edu.mssm.pharm.maayanlab.common.core.FileUtils;
+import edu.mssm.pharm.maayanlab.common.core.Settings;
+import edu.mssm.pharm.maayanlab.common.core.SettingsChanger;
+import edu.mssm.pharm.maayanlab.common.math.SetOps;
 
 public class ChEA implements SettingsChanger {
 
 	private LinkedList<TranscriptionFactor> transcriptionFactors;
 	
-	protected static final String CHEA_BACKGROUND = "res/chea_background.csv";
-	protected static final String TRANSFAC_BACKGROUND = "res/transfac_background.csv";
-	protected static final String PWM_GB_BACKGROUND = "res/PWM-GB.csv";
+	protected final static String CHEA_BACKGROUND = "res/chea_background.csv";
+	protected final static String TRANSFAC_BACKGROUND = "res/transfac_background.csv";
+	protected final static String PWM_GB_BACKGROUND = "res/PWM-GB.csv";
 
 	// Paths to the background rank files
 	private final String MOUSE_CHEA_RANKS = "res/mouse_ChEA_ranks.txt";
-	private final String HUMAN_CHEA_RANKS = "res/human_ChEA_ranks.txt";	
+	private final String HUMAN_CHEA_RANKS = "res/human_ChEA_ranks.txt";
 	private final String COMBINED_CHEA_RANKS = "res/combined_ChEA_ranks.txt";
 	private final String MOUSE_TRANSFAC_RANKS = "res/mouse_TRANSFAC_ranks.txt";
 	private final String HUMAN_TRANSFAC_RANKS = "res/human_TRANSFAC_ranks.txt";
 	private final String COMBINED_TRANSFAC_RANKS = "res/combined_TRANSFAC_ranks.txt";
 	private final String PWM_GB_RANKS = "res/PWM-GB_ranks.txt";
-
+			
 	// New
 	protected static final String CHEA_2015_BACKGROUND = "res/ChEA_2015_background.txt";
 	private final String MOUSE_CHEA_2015_RANKS = "res/ChEA_ranks_mouse.tsv";
@@ -128,7 +129,7 @@ public class ChEA implements SettingsChanger {
 		settings.loadSettings(externalSettings);
 	}
 	
-	
+
 	// Used for other methods to set settings
 	public void setSetting(String key, String value) {
 		settings.set(key, value);
@@ -330,9 +331,9 @@ public class ChEA implements SettingsChanger {
 		while (tfIterator.hasNext()) {
 			TranscriptionFactor currentFactor = tfIterator.next();
 			
-			HashSet<String> targetBgGenes = currentFactor.getTargets();
+			Set<String> targetBgGenes = currentFactor.getTargets();
 			// Target input genes is the intersection of target background genes and input genes
-			HashSet<String> targetInputGenes = SetOps.intersection(targetBgGenes, geneInputSet);
+			Set<String> targetInputGenes = SetOps.intersection(targetBgGenes, geneInputSet);
 					
 			double numOfTargetBgGenes = targetBgGenes.size();
 			double totalBgGenes = geneBgSet.size();
