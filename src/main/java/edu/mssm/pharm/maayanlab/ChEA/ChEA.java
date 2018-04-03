@@ -81,17 +81,17 @@ public class ChEA implements SettingsChanger {
 	};
 	
 	// Settings variables
-	public final static String SORT_BY = "sort_TFs_by";
-	public final static String COMBINED_SCORE = "combined_score";
-	public final static String PVALUE = "pvalue";
+	public final static String SORT_BY = "sort transcription factors by";
+	public final static String COMBINED_SCORE = "combined score";
+	public final static String PVALUE = "p-value";
 	public final static String RANK = "rank";
 	
-	public final static String INCLUDED_ORGANISMS = "included_organisms";
-	public final static String MOUSE_ONLY = "mouse_only";
-	public final static String HUMAN_ONLY = "human_only";
+	public final static String INCLUDED_ORGANISMS = "included organisms in the background database";
+	public final static String MOUSE_ONLY = "mouse";
+	public final static String HUMAN_ONLY = "human";
 	public final static String BOTH = "both";
 	
-	public final static String BACKGROUND_DATABASE = "background_database";
+	public final static String BACKGROUND_DATABASE = "TF-target gene background database used for enrichment";
 	public final static String CHIPX = "ChIP-X";
 	public final static String PWM = "PWM-JT";
 	public final static String PWM_GB = "PWM-GB";
