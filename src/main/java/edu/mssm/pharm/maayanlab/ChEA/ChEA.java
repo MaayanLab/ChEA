@@ -185,8 +185,10 @@ public class ChEA implements SettingsChanger {
 			setSetting(INCLUDED_ORGANISMS, BOTH);
 			readBackground(FileUtils.readResource(ENRICHR_BACKGROUND));
 		}		
-		else			
+		else {
+			System.err.println("WARN: BACKGROUND_DATABASE couldn't be detected!");
 			readBackground(FileUtils.readResource(CHEA_BACKGROUND));
+		}
 		computeEnrichment(genelist);
 	}
 
@@ -308,8 +310,11 @@ public class ChEA implements SettingsChanger {
 				ranks = FileUtils.readResource(COMBINED_CHEA_RANKS);
 		}
 		for (String rank : ranks) {
-			String[] split_rank = rank.split("\\s");
-			tfMap.get(split_rank[0]).setRankStats(Double.parseDouble(split_rank[1]), Double.parseDouble(split_rank[2]));
+			String[] split_rank = rank.toUpperCase().split("\\t");
+			TranscriptionFactor tf = tfMap.get(split_rank[0]);
+			if(tf == null)
+				throw new NullPointerException("setRankStats: "+rank);
+			tf.setRankStats(Double.parseDouble(split_rank[1]), Double.parseDouble(split_rank[2]));
 		}
 		
 		transcriptionFactors = new LinkedList<TranscriptionFactor>(tfMap.values());
