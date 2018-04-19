@@ -63,7 +63,11 @@ public class ChEA implements SettingsChanger {
 	protected final static String ENRICHR_BACKGROUND = "res/Enrichr_Submissions_TF-Gene_Coocurrence.csv";
 	private final String COMBINED_ENRICHR_RANKS = "res/Enrichr_Submissions_TF-Gene_Coocurrence_ranks.txt";
 
+	protected final static String CHEA_2016_BACKGROUND = "TODO";
+	protected final static String CHEA_2016_RANKS = "TODO";
 	
+	protected final static String CREEDS_BACKGROUND = "TODO";
+	protected final static String CREEDS_RANKS = "TODO";
 	
 	// Output header
 	protected final String HEADER = "TF,Target/Input,Targets/Database,Fraction/Input,Fraction/Database,Difference,P-value,Z-score,Combined Score,Genes";
@@ -92,16 +96,18 @@ public class ChEA implements SettingsChanger {
 	public final static String BOTH = "both";
 	
 	public final static String BACKGROUND_DATABASE = "TF-target gene background database used for enrichment";
+
 	public final static String CHIPX = "ChIP-X";
 	public final static String PWM = "PWM-JT";
 	public final static String PWM_GB = "PWM-GB";
-	public static final String CHEA_2015 = "ChEA 2015";
-	public static final String TRANS_JASP = "Transfac and Jaspar";
-	public static final String CONSENSUS = "ChEA & ENCODE Consensus";
-	public static final String ENCODE_2015 = "ENCODE 2015";
-
 	public static final String ARCHS4 = "ARCHS4 TFs Coexp";
+	public static final String CHEA_2015 = "ChEA 2015";
+	public static final String CHEA_2016 = "ChEA 2016";
+	public static final String CONSENSUS = "ChEA & ENCODE Consensus";
+	public static final String CREEDS = "CREEDS";
+	public static final String ENCODE_2015 = "ENCODE 2015";
 	public static final String ENRICHR = "Enrichr Submissions TF-Gene Coocurrence";
+	public static final String TRANS_JASP = "Transfac and Jaspar";
 	
 	
 	public static void main(String[] args) {
@@ -184,7 +190,13 @@ public class ChEA implements SettingsChanger {
 		else if (settings.get(BACKGROUND_DATABASE).equals(ENRICHR)) {
 			setSetting(INCLUDED_ORGANISMS, BOTH);
 			readBackground(FileUtils.readResource(ENRICHR_BACKGROUND));
-		}		
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(CHEA_2016)) {
+			readBackground(FileUtils.readResource(CHEA_2016_BACKGROUND));
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(CREEDS)) {
+			readBackground(FileUtils.readResource(CREEDS_BACKGROUND));
+		}
 		else {
 			System.err.println("WARN: BACKGROUND_DATABASE couldn't be detected!");
 			readBackground(FileUtils.readResource(CHEA_BACKGROUND));
@@ -300,7 +312,13 @@ public class ChEA implements SettingsChanger {
 		}	
 		else if (settings.get(BACKGROUND_DATABASE).equals(ENRICHR)) {
 			ranks = FileUtils.readResource(COMBINED_ENRICHR_RANKS);		
-		}		
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(CHEA_2016)) {
+			ranks = FileUtils.readResource(CHEA_2016_RANKS);		
+		}
+		else if (settings.get(BACKGROUND_DATABASE).equals(CREEDS)) {
+			ranks = FileUtils.readResource(CREEDS_RANKS);		
+		}
 		else {
 			if (settings.get(INCLUDED_ORGANISMS).equals(MOUSE_ONLY))
 				ranks = FileUtils.readResource(MOUSE_CHEA_RANKS);
