@@ -327,13 +327,14 @@ public class ChEA implements SettingsChanger {
 			else
 				ranks = FileUtils.readResource(COMBINED_CHEA_RANKS);
 		}
-		for (String rank : ranks) {
-			String[] split_rank = rank.toUpperCase().split("\\t");
-			TranscriptionFactor tf = tfMap.get(split_rank[0]);
-			if(tf == null)
-				throw new NullPointerException("setRankStats: "+rank);
-			tf.setRankStats(Double.parseDouble(split_rank[1]), Double.parseDouble(split_rank[2]));
-		}
+		// Disabled Ranking for now
+		// for (String rank : ranks) {
+		// 	String[] split_rank = rank.toUpperCase().split("\\t");
+		// 	TranscriptionFactor tf = tfMap.get(split_rank[0]);
+		// 	if(tf == null)
+		// 		throw new NullPointerException("setRankStats: "+rank);
+		// 	tf.setRankStats(Double.parseDouble(split_rank[1]), Double.parseDouble(split_rank[2]));
+		// }
 		
 		transcriptionFactors = new LinkedList<TranscriptionFactor>(tfMap.values());
 	}
@@ -387,12 +388,13 @@ public class ChEA implements SettingsChanger {
 		// First, sort by p-value
 		Collections.sort(transcriptionFactors);
 		
+		// Disabled Ranking for now
 		// Count current rank and compute z-score
-		int counter = 1;
-		for (TranscriptionFactor tf : transcriptionFactors) {
-			tf.computeScore(counter);
-			counter++;
-		}
+		// int counter = 1;
+		// for (TranscriptionFactor tf : transcriptionFactors) {
+		// 	tf.computeScore(counter);
+		// 	counter++;
+		// }
 		
 		if (settings.get(SORT_BY).equals(COMBINED_SCORE)) {
 			// Sort by combined score
