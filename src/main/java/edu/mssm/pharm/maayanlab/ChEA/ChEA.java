@@ -63,11 +63,11 @@ public class ChEA implements SettingsChanger {
 	protected final static String ENRICHR_BACKGROUND = "res/Enrichr_Submissions_TF-Gene_Coocurrence.csv";
 	private final String COMBINED_ENRICHR_RANKS = "res/Enrichr_Submissions_TF-Gene_Coocurrence_ranks.txt";
 
-	protected final static String CHEA_2016_BACKGROUND = "TODO";
-	protected final static String CHEA_2016_RANKS = "TODO";
+	protected final static String CHEA_2016_BACKGROUND = "res/CHEA-2016_Both_TF.csv";
+	protected final static String CHEA_2016_RANKS = "";
 	
-	protected final static String CREEDS_BACKGROUND = "TODO";
-	protected final static String CREEDS_RANKS = "TODO";
+	protected final static String CREEDS_BACKGROUND = "res/CREEDS_TF.csv";
+	protected final static String CREEDS_RANKS = "";
 	
 	// Output header
 	protected final String HEADER = "TF,Target/Input,Targets/Database,Fraction/Input,Fraction/Database,Difference,P-value,Z-score,Combined Score,Genes";
