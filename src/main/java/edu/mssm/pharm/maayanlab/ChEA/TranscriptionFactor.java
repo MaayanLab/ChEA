@@ -9,6 +9,8 @@ public class TranscriptionFactor implements Comparable<Object> {
 	private String name;	// TF-ID
 	@Expose
 	private String simpleName;	// TF
+	@Expose
+	private String meta; // Meta information
 	private int species;	// Species that transcription factor occurs in
 	private Set<String> targets = new HashSet<String>();
 	
@@ -34,11 +36,13 @@ public class TranscriptionFactor implements Comparable<Object> {
 			String name,
 			String simpleName,
 			String species,
-			String target) {
+			String target,
+			String meta) {
 		
 		this.name = name;
 		this.simpleName = simpleName;
 		this.species = (species.equals("MOUSE")) ? TranscriptionFactor.MOUSE : TranscriptionFactor.HUMAN;
+		this.meta = meta;
 		targets.add(target);
 	}
 

@@ -43,7 +43,7 @@ public class ChEA implements SettingsChanger {
 	private final String COMBINED_CHEA_2015_RANKS = "res/ChEA_ranks.tsv";
 
 
-	protected static final String TRANS_JASP_BACKGROUND = "res/TRANSFAC_and_JASPAR_PWMs_background.txt";
+	protected static final String TRANS_JASP_BACKGROUND = "res/TRANSFAC_and_JASPAR_PWMs_background.tsv";
 	private final String MOUSE_TRANS_JASP_RANKS = "res/Transfac_and_Jaspar_PWMs_ranks_mouse.tsv";
 	private final String HUMAN_TRANS_JASP_RANKS = "res/Transfac_and_Jaspar_PWMs_ranks_human.tsv";
 	private final String COMBINED_TRANS_JASP_RANKS = "res/Transfac_and_Jaspar_PWMs_ranks.tsv";
@@ -60,13 +60,13 @@ public class ChEA implements SettingsChanger {
 	protected final static String ARCHS4_BACKGROUND = "res/ARCHS4_TFs_Coexp.csv";
 	private final String HUMAN_ARCHS4_RANKS = "res/ARCHS4_TFs_Coexp_ranks.txt";
 
-	protected final static String ENRICHR_BACKGROUND = "res/Enrichr_Submissions_TF-Gene_Coocurrence.csv";
+	protected final static String ENRICHR_BACKGROUND = "res/Enrichr_Submissions_TF-Gene_Coocurrence.tsv";
 	private final String COMBINED_ENRICHR_RANKS = "res/Enrichr_Submissions_TF-Gene_Coocurrence_ranks.txt";
 
-	protected final static String CHEA_2016_BACKGROUND = "res/CHEA-2016_Both_TF.csv";
+	protected final static String CHEA_2016_BACKGROUND = "res/CHEA-2016_Both_TF.tsv";
 	protected final static String CHEA_2016_RANKS = "";
 	
-	protected final static String CREEDS_BACKGROUND = "res/CREEDS_TF.csv";
+	protected final static String CREEDS_BACKGROUND = "res/CREEDS_TF.tsv";
 	protected final static String CREEDS_RANKS = "";
 	
 	// Output header
@@ -245,12 +245,21 @@ public class ChEA implements SettingsChanger {
 		
 		for (String record : background) {
 			// Split record line
-			String[] splitRecord = record.toUpperCase().split(",");
-			String simpleName = splitRecord[1];
-			String name = splitRecord[2];			
-			String target = splitRecord[3];
-			String species = splitRecord[7];
-		
+			String splitter;
+			if (record.contains("\t")) // TODO: use extension instead
+				splitter = "\t";
+			else
+				splitter = ",";
+
+			String[] splitRecord = record.split(splitter);
+			String simpleName = splitRecord[1].toUpperCase();
+			String name = splitRecord[2].toUpperCase();
+			String target = splitRecord[3].toUpperCase();
+			String species = splitRecord[7].toUpperCase();
+			String meta = "{}";
+			if(splitRecord.length >= 10)
+				meta = splitRecord[9];
+
 			// Ignore entries that are not in the included organisms list
 			if (settings.get(INCLUDED_ORGANISMS).equals(MOUSE_ONLY) && !species.equals("MOUSE"))
 				continue;
@@ -263,7 +272,7 @@ public class ChEA implements SettingsChanger {
 				tf.setSpecies(species);
 			}
 			else {
-				tfMap.put(name, new TranscriptionFactor(name, simpleName, species, target));
+				tfMap.put(name, new TranscriptionFactor(name, simpleName, species, target, meta));
 			}
 		}
 		
