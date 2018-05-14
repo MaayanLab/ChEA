@@ -178,12 +178,9 @@ public class TranscriptionFactor implements Comparable<Object> {
 			return false;
 		TranscriptionFactor other = (TranscriptionFactor) obj;
 		if (simpleName == null) {
-			if (other.simpleName != null)
-				return false;
-		} else if (!simpleName.equals(other.simpleName))
-			return false;
-		return true;
-	}
+            return other.simpleName == null;
+		} else return simpleName.equals(other.simpleName);
+    }
 
 	public void computeScore(int currentRank) {
 		if (mean == 0 && standardDeviation == 0)
