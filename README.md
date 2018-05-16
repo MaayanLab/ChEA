@@ -1,4 +1,8 @@
-# ChIP-X Enrichment Analysis 
+# ChEA
+
+ChIP-X Enrichment Analysis 
+
+[![](https://jitpack.io/v/MaayanLab/ChEA.svg)](https://jitpack.io/#MaayanLab/ChEA)
 
 Database contains manually extracted datasets of transcription-factor/target-gene interactions from over 100 experiments such as ChIP-chip, ChIP-seq, ChIP-PET applied to mammalian cells. We use the database to analyze mRNA expression data where we perform gene-list enrichment analysis as the prior biological knowledge gene-list library. The system is delivered as web-based interactive software. With this software users can input lists of mammalian genes for which the program computes over-representation of transcription factor targets from the ChEA database.
 
