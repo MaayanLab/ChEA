@@ -1,5 +1,15 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'de.undercouch:gradle-download-task:3.4.3'
+  }
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'de.undercouch.download'
 
 group = 'edu.mssm.pharm.maayanlab.ChEA'
 description = 'ChEA'
@@ -23,8 +33,29 @@ dependencies {
 task sourcesJar(type: Jar, dependsOn: classes) {
   classifier = 'sources'
   from sourceSets.main.allSource
+  from "${buildDir}/resources/main"
 }
 
 artifacts {
   archives sourcesJar
 }
+
+task downloadResources(type: Download) {
+  src 'http://amp.pharm.mssm.edu/lincs-playground/index.php/s/j3rcT2zayYGqEZs/download'
+  dest new File(buildDir, 'ChEA.zip')
+  overwrite false
+}
+
+task downloadAndUnzipResources(type: Copy) {
+  from zipTree(downloadResources.dest)
+  into "${buildDir}/resources"
+  eachFile { f ->
+    f.path = f.path.replaceFirst('ChEA/', '')
+  }
+  includeEmptyDirs false
+}
+
+downloadAndUnzipResources.dependsOn downloadResources
+sourcesJar.dependsOn downloadAndUnzipResources
+test.dependsOn downloadAndUnzipResources
+build.dependsOn downloadAndUnzipResources
