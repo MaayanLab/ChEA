@@ -198,7 +198,11 @@ public class ChEA implements SettingsChanger {
 			readBackground(FileUtils.readResource(CREEDS_BACKGROUND));
 		}
 		else {
-			System.err.println("WARN: BACKGROUND_DATABASE couldn't be detected!");
+			if(settings.get(BACKGROUND_DATABASE) == null) {
+				System.err.println("WARN: BACKGROUND_DATABASE (null) couldn't be detected!");
+			} else {
+				System.err.println("WARN: BACKGROUND_DATABASE (" + settings.get(BACKGROUND_DATABASE) + ") couldn't be detected!");
+			}
 			readBackground(FileUtils.readResource(CHEA_BACKGROUND));
 		}
 		computeEnrichment(genelist);
