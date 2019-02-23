@@ -60,7 +60,7 @@ public class ChEA implements SettingsChanger {
 	protected final static String ARCHS4_BACKGROUND = "res/ARCHS4_TFs_Coexp.csv";
 	private final String HUMAN_ARCHS4_RANKS = "res/ARCHS4_TFs_Coexp_ranks.txt";
 
-	protected final static String ENRICHR_BACKGROUND = "res/Enrichr_Submissions_TF-Gene_Coocurrence.tsv";
+	protected final static String ENRICHR_BACKGROUND = "res/Enrichr-Submissions-TF-Gene_Coocurrence.tsv";
 	private final String COMBINED_ENRICHR_RANKS = "res/Enrichr_Submissions_TF-Gene_Coocurrence_ranks.txt";
 
 	protected final static String CHEA_2016_BACKGROUND = "res/CHEA-2016_Both_TF.tsv";
